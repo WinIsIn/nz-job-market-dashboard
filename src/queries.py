@@ -4,12 +4,40 @@ SQL query helpers that return pandas DataFrames for use in the dashboard.
 Each function accepts an optional db_path so tests can point at a fixture database.
 """
 
+import importlib.util
 import sqlite3
+import sys
 from collections import Counter
+from pathlib import Path
 
 import pandas as pd
 
 DEFAULT_DB = "data/jobs.db"
+
+
+def ensure_db(db_path: str = DEFAULT_DB) -> None:
+    """
+    Seed the database with demo data if it doesn't exist.
+
+    Streamlit Cloud starts with a clean filesystem on every deploy, so the
+    SQLite file produced locally is never present. Loading the seed script via
+    importlib (rather than a package import) avoids needing __init__.py in
+    scripts/ and keeps the seeding logic in one canonical place.
+    """
+    if Path(db_path).exists():
+        return
+
+    project_root = Path(__file__).parent.parent
+    seed_path = project_root / "scripts" / "seed_demo_data.py"
+
+    # Make sure src/ is on sys.path so the seed script's own imports resolve
+    if str(project_root) not in sys.path:
+        sys.path.insert(0, str(project_root))
+
+    spec = importlib.util.spec_from_file_location("seed_demo_data", seed_path)
+    seeder = importlib.util.module_from_spec(spec)  # type: ignore[arg-type]
+    spec.loader.exec_module(seeder)  # type: ignore[union-attr]
+    seeder.main()
 
 
 def _connect(db_path: str) -> sqlite3.Connection:

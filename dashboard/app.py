@@ -14,6 +14,7 @@ import plotly.express as px
 import pandas as pd
 
 from src.queries import (
+    ensure_db,
     get_jobs_by_role_type,
     get_top_skills,
     get_jobs_by_city,
@@ -25,6 +26,9 @@ from src.queries import (
 )
 
 DB_PATH = "data/jobs.db"
+
+# Seed demo data on first run (database absent on Streamlit Cloud cold starts)
+ensure_db(DB_PATH)
 
 # ── Brand palette (teal family) ───────────────────────────────────────────────
 PALETTE = ["#1D9E75", "#0F6E56", "#9FE1CB", "#5DCAA5", "#085041"]
