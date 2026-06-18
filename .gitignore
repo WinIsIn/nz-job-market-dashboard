@@ -1,0 +1,28 @@
+# Secrets — never commit real credentials
+.env
+
+# Generated database — too large / user-specific for version control
+data/jobs.db
+
+# Python artefacts
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# Virtual environments
+venv/
+.venv/
+env/
+
+# OS noise
+.DS_Store
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+
+# Claude Code local config (tool permissions, not for version control)
+.claude/
