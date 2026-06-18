@@ -19,7 +19,7 @@ from src.load import load_jobs
 
 SEED = 42
 NUM_JOBS = 200
-DB_PATH = "data/jobs.db"
+DB_PATH = str(Path(__file__).parent.parent / "data" / "jobs.db")
 
 random.seed(SEED)
 

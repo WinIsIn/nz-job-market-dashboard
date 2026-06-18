@@ -25,7 +25,8 @@ from src.queries import (
     get_summary_stats,
 )
 
-DB_PATH = "data/jobs.db"
+# Absolute path so the DB is found regardless of what CWD Streamlit Cloud sets
+DB_PATH = str(Path(__file__).parent.parent / "data" / "jobs.db")
 
 # Seed demo data on first run (database absent on Streamlit Cloud cold starts)
 ensure_db(DB_PATH)

@@ -12,7 +12,8 @@ from pathlib import Path
 
 import pandas as pd
 
-DEFAULT_DB = "data/jobs.db"
+# Absolute path so queries resolve correctly regardless of CWD on Streamlit Cloud
+DEFAULT_DB = str(Path(__file__).parent.parent / "data" / "jobs.db")
 
 
 def ensure_db(db_path: str = DEFAULT_DB) -> None:
